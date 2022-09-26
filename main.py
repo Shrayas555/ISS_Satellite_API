@@ -1,10 +1,9 @@
 import requests
 from datetime import datetime
-import smtplib
+from twillio.rest import Client
 import time
 
-MY_EMAIL = "___YOUR_EMAIL_HERE____"
-MY_PASSWORD = "___YOUR_PASSWORD_HERE___"
+
 MY_LAT = 51.507351 # Your latitude
 MY_LONG = -0.127758 # Your longitude
 
@@ -43,13 +42,11 @@ def is_night():
 while True:
     time.sleep(60)
     if is_iss_overhead() and is_night():
-        connection = smtplib.SMTP("__YOUR_SMTP_ADDRESS_HERE___")
-        connection.starttls()
-        connection.login(MY_EMAIL, MY_PASSWORD)
-        connection.sendmail(
-            from_addr=MY_EMAIL,
-            to_addrs=MY_EMAIL,
-            msg="Subject:Look Up👆\n\nThe ISS is above you in the sky."
-        )
-
+        client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        body=contents,
+        from_='+1 985 531 1090',
+        to='***********'
+    )
+    print(message.status)
 
